@@ -1,779 +1,505 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klub Rajdów Pieszych "Stonoga" - Portal Dostępny</title>
+    <title>Wiktoria + Karol • Strefa Naszej Miłości</title>
     <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts - Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: {
+                            400: '#e0a9a3',
+                            500: '#c5837c',
+                            600: '#a66761',
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                        handwriting: ['Great Vibes', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s; }
-        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-        
-        /* ANIMACJE */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in-up { animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
-        
-        /* STYLE DLA TRYBU WYSOKIEGO KONTRASTU (WCAG) */
-        body.high-contrast {
-            background: #000000 !important;
-            color: #ffff00 !important;
-        }
-        body.high-contrast .glass, 
-        body.high-contrast nav, 
-        body.high-contrast main div, 
-        body.high-contrast article, 
-        body.high-contrast footer,
-        body.high-contrast form,
-        body.high-contrast shadow-sm,
-        body.high-contrast bg-white {
-            background: #000000 !important;
-            color: #ffff00 !important;
-            border-color: #ffff00 !important;
-            box-shadow: none !important;
-        }
-        body.high-contrast button, 
-        body.high-contrast input, 
-        body.high-contrast select, 
-        body.high-contrast textarea {
-            background: #000000 !important;
-            color: #ffff00 !important;
-            border: 2px solid #ffff00 !important;
-        }
-        body.high-contrast button:hover, 
-        body.high-contrast .cat-btn.active-cat {
-            background: #ffff00 !important;
-            color: #000000 !important;
-        }
-        body.high-contrast p, 
-        body.high-contrast span, 
-        body.high-contrast h1, 
-        body.high-contrast h2, 
-        body.high-contrast h3, 
-        body.high-contrast h4,
-        body.high-contrast i {
-            color: #ffff00 !important;
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #07070a;
+            color: #f3f4f6;
+            overflow-x: hidden;
         }
 
-        /* SKALOWANIE TEKSTU */
-        body.text-lg h1 { font-size: 3.5rem !important; }
-        body.text-lg h2 { font-size: 2rem !important; }
-        body.text-lg h3 { font-size: 1.5rem !important; }
-        body.text-lg p, body.text-lg span, body.text-lg button, body.text-lg input, body.text-lg textarea, body.text-lg label { font-size: 1.15rem !important; }
-        
-        body.text-xl h1 { font-size: 4rem !important; }
-        body.text-xl h2 { font-size: 2.5rem !important; }
-        body.text-xl h3 { font-size: 1.85rem !important; }
-        body.text-xl p, body.text-xl span, body.text-xl button, body.text-xl input, body.text-xl textarea, body.text-xl label { font-size: 1.35rem !important; }
-
-        *:focus-visible {
-            outline: 3px solid #059669 !important;
-            outline-offset: 2px;
+        #cursor-light {
+            pointer-events: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 450px;
+            height: 450px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(197, 131, 124, 0.18) 0%, rgba(197, 131, 124, 0.05) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s, height 0.3s;
+            z-index: 50;
         }
-        body.high-contrast *:focus-visible {
-            outline: 3px solid #ffff00 !important;
+
+        .glass-panel {
+            background: rgba(18, 18, 24, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(197, 131, 124, 0.2);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .iphone-btn {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .iphone-btn:hover {
+            background: rgba(197, 131, 124, 0.15);
+            border-color: rgba(197, 131, 124, 0.4);
+        }
+        .iphone-btn:active, .iphone-btn.pressed {
+            background: rgba(197, 131, 124, 0.35) !important;
+            transform: scale(0.92);
+        }
+
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+        .floating-rose {
+            animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        @keyframes heartPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(197,131,124,0.4)); }
+            50% { transform: scale(1.08); filter: drop-shadow(0 0 25px rgba(197,131,124,0.8)); }
+        }
+        .pulse-heart {
+            animation: heartPulse 3s ease-in-out infinite;
+        }
+
+        .letter-paper {
+            background: linear-gradient(to bottom, #fdfbf7 0%, #f4ebd9 100%);
+            color: #2c2523;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            font-family: 'Playfair Display', serif;
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-stone-50 via-emerald-50/20 to-stone-100 text-stone-800 min-h-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col justify-between selection:bg-[#c5837c] selection:text-white relative">
 
-    <!-- EKRAN PRZERWY TECHNICZNEJ Z LOGOWANIEM ADMINA -->
-    <div id="maintenanceScreen" class="fixed inset-0 bg-stone-950 text-white z-50 flex flex-col items-center justify-center p-6 hidden text-center">
-        <div class="animate-fade-in-up flex flex-col items-center justify-center">
-            <div class="w-20 h-20 bg-amber-500/10 text-amber-500 border border-amber-500/30 rounded-3xl flex items-center justify-center text-4xl mb-6 animate-pulse">
-                <i class="fa-solid fa-screwdriver-wrench"></i>
-            </div>
-            <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-4">Przerwa Techniczna</h1>
-            <p class="text-stone-400 max-w-md text-sm md:text-base mb-8">Aktualnie aktualizujemy szlaki informacyjne na naszym portalu. Wracamy do Was niebawem! Sprawdź dostępność serwisu później.</p>
-            
-            <!-- PRZYCISK LOGOWANIA PODCZAS PRZERWY -->
-            <button onclick="openModal('loginModal')" class="bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 font-medium text-xs px-4 py-2.5 rounded-xl transition-all flex items-center space-x-2 mb-12 shadow-md">
-                <i class="fa-solid fa-user-lock text-amber-500"></i>
-                <span>Zaloguj jako Administrator</span>
-            </button>
+    <div id="cursor-light"></div>
 
-            <div class="text-xs text-stone-600 font-mono border border-stone-800 px-4 py-2 rounded-xl">Klub Górski "Stonoga" &copy; 2026</div>
-        </div>
+    <!-- Background lighting effects -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-40 -left-40 w-[500px] h-[500px] bg-rose-950/30 rounded-full blur-[120px]"></div>
+        <div class="absolute top-1/2 -right-40 w-[500px] h-[500px] bg-amber-950/20 rounded-full blur-[120px]"></div>
+        <div class="absolute -bottom-40 left-1/3 w-[500px] h-[500px] bg-rose-900/20 rounded-full blur-[120px]"></div>
     </div>
 
-    <!-- PRZYCISK POMINIĘCIA DLA CZYTNIKÓW EKRANU (Accessibility) -->
-    <a href="#main-content" class="sr-only focus:not-sr-only fixed top-2 left-2 bg-emerald-600 text-white px-4 py-2 rounded-xl z-50">Przejdź do głównej zawartości</a>
-
-    <!-- AKCESORYJNY PANEL DOSTĘPNOŚCI (WCAG) -->
-    <div class="fixed right-4 top-24 flex flex-col gap-2 z-50 bg-white/90 p-2 rounded-2xl shadow-xl border border-stone-200/80 glass transition-all duration-300 hover:scale-105" role="toolbar" aria-label="Narzędzia dostępności cyfrowej">
-        <button onclick="toggleHighContrast()" class="w-10 h-10 bg-stone-900 text-amber-300 rounded-xl flex items-center justify-center font-bold text-sm hover:bg-stone-800 transition-all" title="Włącz tryb wysokiego kontrastu" aria-label="Włącz tryb wysokiego kontrastu">
-            <i class="fa-solid fa-circle-half-stroke"></i>
-        </button>
-        <button onclick="changeTextSize('normal')" class="w-10 h-10 bg-stone-100 text-stone-800 border border-stone-200 rounded-xl flex items-center justify-center font-medium text-xs hover:bg-stone-200 transition-all" title="Normalny rozmiar tekstu" aria-label="Normalny rozmiar tekstu">A</button>
-        <button onclick="changeTextSize('lg')" class="w-10 h-10 bg-stone-100 text-stone-800 border border-stone-200 rounded-xl flex items-center justify-center font-bold text-sm hover:bg-stone-200 transition-all" title="Powiększony tekst" aria-label="Powiększony tekst">A+</button>
-        <button onclick="changeTextSize('xl')" class="w-10 h-10 bg-stone-100 text-stone-800 border border-stone-200 rounded-xl flex items-center justify-center font-extrabold text-base hover:bg-stone-200 transition-all" title="Bardzo powiększony tekst" aria-label="Bardzo powiększony tekst">A++</button>
-    </div>
-
-    <!-- NAWIGACJA -->
-    <nav class="glass border-b border-stone-200/50 sticky top-0 z-40 transition-all">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center max-w-6xl">
-            <!-- LOGO -->
-            <div class="flex items-center space-x-3 group cursor-pointer" onclick="location.reload()" role="banner">
-                <img src="logo.png" alt="Logo Klubu Górskiego Stonoga" class="w-10 h-10 object-contain rounded-xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-6" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/2321/2321458.png';">
-                <div>
-                    <span class="text-lg font-extrabold tracking-tight text-stone-900 block leading-none">STONOGA</span>
-                    <span class="text-[10px] font-semibold text-emerald-600 tracking-widest uppercase">Klub Górski</span>
-                </div>
-            </div>
-            
-            <div class="flex items-center space-x-2">
-                <!-- PRZYCISK PRZERWY TECHNICZNEJ DLA ADMINA -->
-                <button id="adminMaintBtn" onclick="toggleMaintenanceMode()" class="hidden bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3 py-2.5 rounded-xl transition-all flex items-center space-x-1.5 shadow-md">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
-                    <span id="maintBtnText">Przerwa Techniczna</span>
-                </button>
-
-                <button id="adminPostBtn" onclick="openModal('postModal')" class="hidden bg-stone-900 hover:bg-stone-800 text-white font-medium text-sm px-4 py-2.5 rounded-xl transition-all duration-300 shadow-md shadow-stone-900/10 hover:-translate-y-0.5 flex items-center space-x-2">
-                    <i class="fa-solid fa-plus text-xs text-emerald-400" aria-hidden="true"></i>
-                    <span>Nowy wpis</span>
-                </button>
-                
-                <button id="loginBtn" onclick="openModal('loginModal')" class="bg-white hover:bg-stone-50 text-stone-700 font-medium text-sm px-4 py-2.5 rounded-xl border border-stone-200 shadow-sm transition-all flex items-center space-x-2" aria-label="Logowanie administratora">
-                    <i class="fa-solid fa-user-lock text-stone-400 text-xs" aria-hidden="true"></i>
-                    <span>Panel Admina</span>
-                </button>
-                
-                <button id="logoutBtn" onclick="logoutAdmin()" class="hidden bg-rose-50 hover:bg-rose-100 text-rose-700 font-semibold text-sm px-4 py-2.5 rounded-xl border border-rose-200/60 transition-all flex items-center space-x-2">
-                    <span>Wyloguj</span>
-                    <span class="bg-rose-200/60 text-rose-800 text-[10px] px-1.5 py-0.5 rounded">Admin</span>
-                </button>
-            </div>
+    <!-- Top Navigation Header -->
+    <header class="w-full py-6 px-6 text-center z-40 relative border-b border-[#c5837c]/10 bg-[#07070a]/80 backdrop-blur-md">
+        <div class="inline-flex items-center gap-3 cursor-pointer group" onclick="returnToLock()">
+            <span class="text-[#e0a9a3] text-2xl floating-rose">🌹</span>
+            <h1 class="font-serif text-2xl md:text-3xl tracking-wider text-stone-100 font-medium group-hover:text-[#e0a9a3] transition-colors">
+                Wiktoria <span class="text-[#e0a9a3] font-light mx-1.5">+</span> Karol
+            </h1>
+            <span class="text-[#e0a9a3] text-2xl floating-rose" style="animation-delay: 2.5s;">✨</span>
         </div>
-    </nav>
-
-    <!-- HERO SECTION -->
-    <header class="container mx-auto px-6 pt-12 pb-4 max-w-6xl">
-        <div class="bg-gradient-to-r from-emerald-950 to-teal-900 text-white p-8 md:p-12 rounded-3xl shadow-2xl shadow-emerald-950/20 relative overflow-hidden transition-all duration-500 hover:shadow-emerald-900/30">
-            <div class="max-w-xl relative z-10">
-                <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full mb-4 inline-block">Życie klubu</span>
-                <h1 class="text-3xl md:text-5xl font-black tracking-tight mb-4 leading-tight">Nasza społeczność</h1>
-                <p class="text-emerald-100/80 text-sm md:text-base font-light leading-relaxed">Przeglądaj aktualności, podziwiaj galerie zdjęć ze wspólnych wyjść i śledź liczniki nadchodzących wydarzeń górskich!</p>
-            </div>
-        </div>
+        <p class="text-xs text-stone-400 tracking-[0.25em] uppercase mt-1 font-light">Strefa Naszej Miłości</p>
     </header>
 
-    <!-- SYSTEM KATEGORII (FILTRY) -->
-    <section class="container mx-auto px-6 py-4 max-w-6xl" role="tablist" aria-label="Filtrowanie kategorii wpisów">
-        <div class="flex flex-wrap gap-2 border-b border-stone-200 pb-4">
-            <button onclick="setCategory('wszystkie')" id="cat-wszystkie" role="tab" aria-selected="true" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-emerald-600 text-white shadow-sm active-cat hover:scale-105">
-                Wszystko
-            </button>
-            <button onclick="setCategory('ogloszenia')" id="cat-ogloszenia" role="tab" aria-selected="false" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-white text-stone-600 hover:bg-stone-100 hover:scale-105 border border-stone-200">
-                <i class="fa-solid fa-bullhorn mr-2 text-emerald-600" aria-hidden="true"></i>Ogłoszenia
-            </button>
-            <button onclick="setCategory('zdjecia')" id="cat-zdjecia" role="tab" aria-selected="false" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-white text-stone-600 hover:bg-stone-100 hover:scale-105 border border-stone-200">
-                <i class="fa-solid fa-camera mr-2 text-amber-500" aria-hidden="true"></i>Zdjęcia z wyjść
-            </button>
-            <button onclick="setCategory('kadra')" id="cat-kadra" role="tab" aria-selected="false" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-white text-stone-600 hover:bg-stone-100 hover:scale-105 border border-stone-200">
-                <i class="fa-solid fa-user-shield mr-2 text-blue-500" aria-hidden="true"></i>Kadra
-            </button>
-            <button onclick="setCategory('partnerstwa')" id="cat-partnerstwa" role="tab" aria-selected="false" class="cat-btn px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 bg-white text-stone-600 hover:bg-stone-100 hover:scale-105 border border-stone-200">
-                <i class="fa-solid fa-handshake mr-2 text-purple-500" aria-hidden="true"></i>Partnerstwa
-            </button>
-        </div>
-    </section>
+    <main class="flex-grow flex items-center justify-center p-4 z-10 relative my-8">
 
-    <!-- GŁÓWNY PANEL -->
-    <main id="main-content" class="container mx-auto px-6 py-2 flex-grow max-w-6xl grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Lewy panel boczny -->
-        <div class="lg:col-span-1 space-y-6">
-            <div class="bg-white p-6 rounded-2xl border border-stone-200/60 shadow-sm transition-all duration-300 hover:shadow-md">
-                <h2 class="text-xs font-bold uppercase tracking-widest text-emerald-700 mb-3 flex items-center">
-                    <i class="fa-solid fa-compass mr-2 text-sm" aria-hidden="true"></i> Tablica informacyjna
-                </h2>
-                <p class="text-stone-600 text-sm leading-relaxed mb-4">
-                    Wybierz interesującą Cię zakładkę powyżej, aby przefiltrować tablicę. Każdy wpis dysponuje modułem komentarzy dostępnym dla wszystkich użytkowników sieci.
+        <!-- iPhone PIN Lock Screen -->
+        <div id="lock-screen" class="w-full max-w-sm glass-panel p-8 rounded-[2.5rem] shadow-2xl text-center transition-all duration-500">
+            <div class="mb-6">
+                <div class="w-16 h-16 mx-auto rounded-full bg-[#c5837c]/10 border border-[#c5837c]/30 flex items-center justify-center text-[#e0a9a3] mb-3 pulse-heart shadow-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                </div>
+                <h2 class="font-serif text-2xl font-medium text-stone-100">Wprowadź kod PIN</h2>
+                <p class="text-xs text-stone-400 mt-1">Kod dostępu do naszej strefy (Wskazówka: 1234)</p>
+            </div>
+
+            <!-- PIN dots -->
+            <div class="flex justify-center items-center gap-4 mb-8">
+                <div id="dot-0" class="w-3.5 h-3.5 rounded-full border border-[#e0a9a3]/60 transition-all duration-300"></div>
+                <div id="dot-1" class="w-3.5 h-3.5 rounded-full border border-[#e0a9a3]/60 transition-all duration-300"></div>
+                <div id="dot-2" class="w-3.5 h-3.5 rounded-full border border-[#e0a9a3]/60 transition-all duration-300"></div>
+                <div id="dot-3" class="w-3.5 h-3.5 rounded-full border border-[#e0a9a3]/60 transition-all duration-300"></div>
+            </div>
+
+            <!-- Error message -->
+            <div id="pin-error" class="text-rose-400 text-xs mb-4 h-4 opacity-0 transition-opacity duration-300 font-medium">
+                Nieprawidłowy kod. Spróbuj ponownie (1234)
+            </div>
+
+            <!-- Keypad -->
+            <div class="grid grid-cols-3 gap-4 max-w-[270px] mx-auto">
+                <button onclick="pressKey('1')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">1</span>
+                </button>
+                <button onclick="pressKey('2')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">2</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">ABC</span>
+                </button>
+                <button onclick="pressKey('3')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">3</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">DEF</span>
+                </button>
+
+                <button onclick="pressKey('4')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">4</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">GHI</span>
+                </button>
+                <button onclick="pressKey('5')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">5</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">JKL</span>
+                </button>
+                <button onclick="pressKey('6')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">6</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">MNO</span>
+                </button>
+
+                <button onclick="pressKey('7')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">7</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">PQRS</span>
+                </button>
+                <button onclick="pressKey('8')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">8</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">TUV</span>
+                </button>
+                <button onclick="pressKey('9')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">9</span>
+                    <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">WXYZ</span>
+                </button>
+
+                <div></div>
+                <button onclick="pressKey('0')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                    <span class="text-2xl font-medium text-stone-100">0</span>
+                </button>
+                <button onclick="deleteKey()" class="w-[72px] h-[72px] rounded-full flex items-center justify-center cursor-pointer mx-auto text-stone-400 hover:text-stone-100 transition-colors text-xs font-medium uppercase tracking-wider">
+                    Usuń
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Love Content (Unlocked after PIN 1234) -->
+        <div id="love-content" class="hidden w-full max-w-4xl space-y-10 opacity-0 transition-all duration-700 transform translate-y-6">
+            
+            <!-- Hero Section -->
+            <div class="glass-panel p-8 md:p-14 rounded-[2.5rem] text-center relative overflow-hidden shadow-2xl">
+                <div class="absolute -right-20 -top-20 text-[#c5837c]/10 text-[12rem] font-serif select-none pointer-events-none">W&K</div>
+                <span class="inline-block py-1.5 px-5 rounded-full bg-[#c5837c]/10 text-[#e0a9a3] text-xs tracking-[0.2em] uppercase mb-5 border border-[#c5837c]/20 font-semibold shadow-inner">Nasza Przestrzeń Miłości</span>
+                <h2 class="font-serif text-4xl md:text-6xl text-stone-100 mb-6 tracking-wide">Wiktoria & Karol</h2>
+                <p class="text-stone-300 max-w-xl mx-auto font-light leading-relaxed mb-10 text-base md:text-lg">
+                    Nasza historia rozpoczęła się 28 sierpnia 2026 roku. Każda chwila spędzona razem to najpiękniejszy rozdział, jaki mogliśmy napisać.
                 </p>
-                <div class="p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs text-stone-500 flex items-start space-x-2">
-                    <i class="fa-solid fa-circle-info text-emerald-600 mt-0.5 animate-bounce" aria-hidden="true"></i>
-                    <span>Zarządzanie treścią oraz zbiorcze przesyłanie fotografii zarezerwowane jest dla autoryzowanych przewodników.</span>
+
+                <!-- Counters & Dates -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-xl mx-auto pt-8 border-t border-[#c5837c]/15">
+                    <div class="bg-black/40 p-5 rounded-2xl border border-[#c5837c]/10 hover:border-[#e0a9a3]/40 transition-colors">
+                        <span id="days-count" class="block font-serif text-3xl md:text-4xl text-[#e0a9a3] font-bold mb-1">0</span>
+                        <span class="text-xs text-stone-400 uppercase tracking-widest font-medium">Dni od poznania</span>
+                    </div>
+                    <div class="bg-black/40 p-5 rounded-2xl border border-[#c5837c]/10 hover:border-[#e0a9a3]/40 transition-colors">
+                        <span class="block font-serif text-3xl md:text-4xl text-[#e0a9a3] font-bold mb-1">28.08</span>
+                        <span class="text-xs text-stone-400 uppercase tracking-widest font-medium">Data Poznania</span>
+                    </div>
+                    <div class="bg-black/40 p-5 rounded-2xl border border-[#c5837c]/10 hover:border-[#e0a9a3]/40 transition-colors">
+                        <span class="block font-serif text-3xl md:text-4xl text-[#e0a9a3] font-bold mb-1">30.08</span>
+                        <span class="text-xs text-stone-400 uppercase tracking-widest font-medium">Pierwsza Randka</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Prawy panel: Strumień postów -->
-        <div class="lg:col-span-2 space-y-6">
-            <div class="flex justify-between items-center">
-                <h2 class="text-xl font-bold text-stone-900 tracking-tight flex items-center">
-                    <span class="w-2 h-6 bg-emerald-600 rounded-full mr-3 inline-block" aria-hidden="true"></span>
-                    Wpisy i materiały klubowe
-                </h2>
-                <span id="adminIndicator" class="hidden bg-amber-50 text-amber-700 text-[11px] px-3 py-1 rounded-full font-bold border border-amber-200/60 animate-pulse">
-                    Panel Admina Aktywny
-                </span>
+            <!-- SPECIAL SECTION: List od Wiktorii do otwarcia -->
+            <div class="glass-panel p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden">
+                <div class="text-center mb-8">
+                    <span class="text-[#e0a9a3] text-xs uppercase tracking-[0.25em] font-semibold">Wiadomość prosto z serca</span>
+                    <h3 class="font-serif text-2xl md:text-3xl font-medium text-stone-100 mt-1">List od Wiktorii do otwarcia</h3>
+                    <p class="text-stone-400 text-xs tracking-wider mt-1">Kliknij pieczęć na kopercie, aby przeczytać list</p>
+                </div>
+
+                <!-- Envelope Container -->
+                <div class="max-w-xl mx-auto">
+                    <!-- Closed Envelope View -->
+                    <div id="envelope-closed" class="bg-gradient-to-br from-stone-900 to-[#181515] border border-[#c5837c]/30 rounded-3xl p-8 text-center cursor-pointer transition-all duration-300 hover:border-[#e0a9a3] hover:shadow-[0_10px_30px_rgba(197,131,124,0.2)] group" onclick="openLetter()">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-[#c5837c]/20 border border-[#c5837c]/50 flex items-center justify-center text-[#e0a9a3] mb-4 group-hover:scale-110 transition-transform shadow-xl">
+                            <span class="text-3xl">💌</span>
+                        </div>
+                        <h4 class="font-serif text-xl text-stone-100 font-medium mb-1">Dla Mojego Kochanego Karola</h4>
+                        <p class="text-xs text-[#e0a9a3] tracking-widest uppercase font-medium">Kliknij, aby otworzyć kopertę</p>
+                    </div>
+
+                    <!-- Open Letter View (Initially Hidden) -->
+                    <div id="envelope-open" class="hidden transition-all duration-500">
+                        <div class="letter-paper p-8 md:p-12 rounded-3xl relative">
+                            <div class="absolute top-4 right-6 text-stone-400 text-xs font-sans">28.08.2026</div>
+                            <h4 class="font-serif text-2xl md:text-3xl font-bold text-stone-900 mb-6 border-b border-stone-300/60 pb-4">Mój Kochany Karolu,</h4>
+                            
+                            <div class="space-y-4 text-stone-800 text-base md:text-lg font-light leading-relaxed">
+                                <p>
+                                    Kiedy nasze drogi skrzyżowały się po raz pierwszy 28 sierpnia, nawet nie wiedziałam, jak bardzo zmieni się mój świat. Z każdą rozmową, z każdym uśmiechem i wspólnie spędzoną chwilą stawałeś się dla mnie kimś niesamowicie ważnym.
+                                </p>
+                                <p>
+                                    Nasza pierwsza randka uświadomiła mi, że odnalazłam kogoś wyjątkowego – dom w czyichś ramionach, bezpieczną przystań i najlepszego przyjaciela w jednej osobie.
+                                </p>
+                                <p>
+                                    Dziękuję Ci za każdą sekundę, za Twój śmiech i za to, że po prostu jesteś. Kocham Cię dziś mocniej niż wczoraj, a mniej niż jutro.
+                                </p>
+                            </div>
+
+                            <div class="mt-8 pt-6 border-t border-stone-300/60 flex justify-between items-center">
+                                <span class="font-['Great_Vibes'] text-3xl md:text-4xl text-rose-800">Twoja Wiktoria</span>
+                                <button onclick="closeLetter()" class="px-5 py-2 bg-stone-900 text-stone-200 text-xs rounded-xl hover:bg-stone-800 transition-colors cursor-pointer font-sans shadow-md">
+                                    🔒 Zamknij list
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Główny kontener na posty -->
-            <div id="postsContainer" class="space-y-6" role="feed" aria-busy="false">
-                <!-- Generowane przez JS -->
+            <!-- Timeline -->
+            <div class="glass-panel p-8 md:p-12 rounded-[2.5rem]">
+                <div class="text-center mb-10">
+                    <h3 class="font-serif text-2xl md:text-3xl font-medium text-stone-100">Nasza Oś Czasu</h3>
+                    <p class="text-stone-400 text-xs tracking-wider mt-1">Dwa najważniejsze momenty, które nas połączyły</p>
+                </div>
+
+                <div class="relative border-l border-[#c5837c]/30 ml-4 md:ml-32 space-y-12">
+                    <div class="relative pl-8 md:pl-12 group">
+                        <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-stone-950 border-2 border-[#e0a9a3] flex items-center justify-center text-[#e0a9a3] text-xs shadow-lg">✨</div>
+                        <div class="absolute -left-36 top-1.5 hidden md:block text-right w-24">
+                            <span class="text-[#e0a9a3] font-serif font-bold text-sm">28.08.2026</span>
+                        </div>
+                        <div class="bg-black/30 border border-[#c5837c]/15 p-6 rounded-2xl hover:border-[#e0a9a3]/40 transition-all">
+                            <span class="md:hidden inline-block text-[#e0a9a3] font-serif font-bold text-xs mb-2">28.08.2026</span>
+                            <h4 class="font-serif text-xl font-medium text-stone-100 mb-2">Dzień, w którym się poznaliśmy</h4>
+                            <p class="text-stone-400 text-sm font-light leading-relaxed">
+                                Data, od której wszystko się zaczęło. Spotkanie, które odmieniło nasz świat i sprawiło, że nasze drogi splotły się na zawsze.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 md:pl-12 group">
+                        <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-stone-950 border-2 border-[#e0a9a3] flex items-center justify-center text-[#e0a9a3] text-xs shadow-lg">🌹</div>
+                        <div class="absolute -left-36 top-1.5 hidden md:block text-right w-24">
+                            <span class="text-[#e0a9a3] font-serif font-bold text-sm">30.08.2026</span>
+                        </div>
+                        <div class="bg-black/30 border border-[#c5837c]/15 p-6 rounded-2xl hover:border-[#e0a9a3]/40 transition-all">
+                            <span class="md:hidden inline-block text-[#e0a9a3] font-serif font-bold text-xs mb-2">30.08.2026</span>
+                            <h4 class="font-serif text-xl font-medium text-stone-100 mb-2">Nasza Pierwsza Randka</h4>
+                            <p class="text-stone-400 text-sm font-light leading-relaxed">
+                                Magiczne spotkanie we dwoje, pełne długich rozmów, uśmiechów i poczucia, że odnaleźliśmy kogoś wyjątkowego.
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            <!-- Gallery Section (4 Imgur Photos - Completely Without Descriptions) -->
+            <div class="glass-panel p-8 md:p-10 rounded-[2.5rem]">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+                    <div>
+                        <h3 class="font-serif text-2xl md:text-3xl font-medium text-stone-100">Nasza Galeria</h3>
+                        <p class="text-stone-400 text-xs tracking-wider mt-1">Wybrane kadry z naszych najpiękniejszych chwil</p>
+                    </div>
+                    <span class="px-4 py-1.5 rounded-full bg-[#c5837c]/10 text-[#e0a9a3] text-xs font-medium border border-[#c5837c]/20">Wspomnienia</span>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Photo 1: https://imgur.com/bg1rwUc -->
+                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
+                        <img src="https://imgur.com/bg1rwUc.png" alt="Wiktoria i Karol 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+1'">
+                    </div>
+                    <!-- Photo 2: https://imgur.com/emN2Ha1 -->
+                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
+                        <img src="https://imgur.com/emN2Ha1.png" alt="Wiktoria i Karol 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+2'">
+                    </div>
+                    <!-- Photo 3: https://imgur.com/1eK6gQC -->
+                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
+                        <img src="https://imgur.com/1eK6gQC.png" alt="Wiktoria i Karol 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+3'">
+                    </div>
+                    <!-- Photo 4: https://imgur.com/cSu0IQW -->
+                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
+                        <img src="https://imgur.com/cSu0IQW.png" alt="Wiktoria i Karol 4" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+4'">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Return button -->
+            <div class="text-center pt-4">
+                <button onclick="returnToLock()" class="px-8 py-3.5 bg-stone-900 hover:bg-stone-800 text-stone-300 border border-[#c5837c]/20 rounded-2xl transition-all cursor-pointer text-sm font-medium shadow-xl hover:border-[#e0a9a3]">
+                    🔒 Zablokuj stronę (Powrót do PIN-u)
+                </button>
+            </div>
+
         </div>
+
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-white border-t border-stone-200/60 py-6 text-center text-xs text-stone-400 font-medium mt-16">
-        <p>&copy; 2026 Klub Rajdów Pieszych "Stonoga". Serwis zaprojektowany zgodnie ze standardami WCAG.</p>
+    <!-- Footer -->
+    <footer class="w-full py-6 text-center text-xs text-stone-500 border-t border-[#c5837c]/10 bg-[#07070a]/80 z-20">
+        <p>Stworzone z miłością dla <span class="text-[#e0a9a3] font-medium">Wiktoria + Karol</span> &copy; 2026</p>
     </footer>
 
-
-    <!-- --- OKNA POP-UP (MODALE) --- -->
-
-    <!-- MODAL: NOWY POST Z TIMEREM I FUNKCJĄ MULTI-ZDJĘĆ -->
-    <div id="postModal" class="fixed inset-0 bg-stone-950/40 backdrop-blur-xs hidden z-50 flex items-center justify-center p-4 transition-all duration-300" role="dialog" aria-modal="true" aria-labelledby="postModalTitle">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-stone-100 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
-                <h3 id="postModalTitle" class="text-lg font-bold text-stone-900 flex items-center"><i class="fa-solid fa-file-circle-plus text-emerald-600 mr-2.5" aria-hidden="true"></i>Tworzenie nowego wpisu</h3>
-                <button onclick="closeModal('postModal')" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 text-2xl transition-all" aria-label="Zamknij okno">&times;</button>
-            </div>
-            <form id="postForm" onsubmit="savePost(event)" class="space-y-4">
-                <div>
-                    <label for="postCategory" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Kategoria wpisu</label>
-                    <select id="postCategory" onchange="togglePhotoInput(this.value)" required class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-emerald-500/20 focus:outline-none">
-                        <option value="ogloszenia">📣 Ogłoszenia</option>
-                        <option value="zdjecia">📷 Zdjęcia z wyjść</option>
-                        <option value="kadra">🛡️ Kadra</option>
-                        <option value="partnerstwa">🤝 Partnerstwa</option>
-                    </select>
-                </div>
-                <div>
-                    <label for="postTitle" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Tytuł wpisu</label>
-                    <input type="text" id="postTitle" required placeholder="Wpisz krótki tytuł" class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-sm font-medium focus:ring-2 focus:ring-emerald-500/20 focus:outline-none">
-                </div>
-                <div>
-                    <label for="postDescription" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5">Treść / Opis</label>
-                    <textarea id="postDescription" required rows="4" placeholder="Wpisz treść artykułu..." class="w-full px-4 py-3 bg-stone-50 border border-stone-200 rounded-xl text-sm leading-relaxed focus:ring-2 focus:ring-emerald-500/20 focus:outline-none"></textarea>
-                </div>
-                
-                <!-- MULTI-UPLOAD DLA ZDJĘĆ -->
-                <div id="photoUploadSection" class="hidden bg-stone-50 p-4 rounded-xl border border-dashed border-stone-300">
-                    <label for="postPhotos" class="block text-xs font-bold uppercase tracking-wider text-stone-600 mb-1">Załącz zdjęcia klubowe (Wybierz kilka plików)</label>
-                    <input type="file" id="postPhotos" multiple accept="image/*" class="w-full text-xs text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100 cursor-pointer">
-                </div>
-
-                <!-- SEKCJA TIMERA -->
-                <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-3">
-                    <div class="flex items-center space-x-2">
-                        <input type="checkbox" id="enableTimer" onchange="document.getElementById('timerFields').classList.toggle('hidden', !this.checked)" class="w-4 h-4 text-emerald-600 border-stone-300 rounded focus:ring-emerald-500">
-                        <label for="enableTimer" class="text-xs font-bold uppercase tracking-wider text-stone-700 cursor-pointer">Dodaj licznik odliczania wydarzenia</label>
-                    </div>
-                    <div id="timerFields" class="hidden space-y-3 pt-2 border-t border-stone-200">
-                        <div>
-                            <label for="timerName" class="block text-[11px] font-bold uppercase text-stone-500 mb-1">Nazwa licznika</label>
-                            <input type="text" id="timerName" placeholder="np. Odliczanie do startu rajdu" class="w-full px-3 py-2 bg-white border border-stone-200 rounded-lg text-xs focus:outline-none">
-                        </div>
-                        <div>
-                            <label for="timerDesc" class="block text-[11px] font-bold uppercase text-stone-500 mb-1">Opis licznika</label>
-                            <input type="text" id="timerDesc" placeholder="np. Zbiórka pod schroniskiem Ornak" class="w-full px-3 py-2 bg-white border border-stone-200 rounded-lg text-xs focus:outline-none">
-                        </div>
-                        <div>
-                            <label for="timerDate" class="block text-[11px] font-bold uppercase text-stone-500 mb-1">Data i godzina docelowa</label>
-                            <input type="datetime-local" id="timerDate" class="w-full px-3 py-2 bg-white border border-stone-200 rounded-lg text-xs focus:outline-none">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" onclick="closeModal('postModal')" class="px-4 py-2.5 text-stone-500 hover:bg-stone-50 rounded-xl text-sm font-medium">Anuluj</button>
-                    <button type="submit" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl shadow-lg shadow-emerald-600/10">Opublikuj wpis</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: LOGOWANIE ADMINA (Działa również na ekranie serwisowym) -->
-    <div id="loginModal" class="fixed inset-0 bg-stone-950/60 backdrop-blur-xs hidden z-[60] flex items-center justify-center p-4 animate-fade-in-up" role="dialog" aria-modal="true" aria-labelledby="loginModalTitle">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-stone-200 text-stone-800">
-            <div class="flex justify-between items-center mb-5">
-                <h3 id="loginModalTitle" class="text-base font-bold text-stone-900 flex items-center"><i class="fa-solid fa-shield-halved text-amber-500 mr-2" aria-hidden="true"></i>Autoryzacja Zarządu</h3>
-                <button onclick="closeModal('loginModal')" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-stone-100 text-stone-400 text-2xl transition-all" aria-label="Zamknij okno">&times;</button>
-            </div>
-            <form id="loginForm" onsubmit="loginAdmin(event)" class="space-y-3">
-                <div>
-                    <label for="username" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1">Identyfikator</label>
-                    <input type="text" id="username" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
-                </div>
-                <div>
-                    <label for="password" class="block text-xs font-bold uppercase tracking-wider text-stone-500 mb-1">Klucz dostępu</label>
-                    <input type="password" id="password" required class="w-full px-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm text-stone-900 focus:outline-none focus:ring-2 focus:ring-emerald-500/20">
-                </div>
-                <div id="loginError" class="hidden text-rose-600 text-xs font-semibold bg-rose-50 p-2.5 rounded-lg border border-rose-100" role="alert">
-                    Błędny identyfikator lub hasło autoryzacyjne.
-                </div>
-                <div class="flex justify-end space-x-2 pt-2">
-                    <button type="button" onclick="closeModal('loginModal')" class="px-4 py-2 text-stone-500 hover:bg-stone-50 rounded-xl text-xs font-medium">Anuluj</button>
-                    <button type="submit" class="px-4 py-2 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold rounded-xl shadow-sm">Zatwierdź</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- LIGHTBOX MODAL -->
-    <div id="lightboxModal" class="fixed inset-0 bg-black/95 hidden z-50 flex flex-col items-center justify-center p-4 transition-all duration-300" role="dialog" aria-modal="true" aria-label="Pełny podgląd obrazu">
-        <button onclick="closeLightbox()" class="absolute top-4 right-4 text-white text-4xl hover:text-stone-300 w-12 h-12 flex items-center justify-center bg-white/10 rounded-full" aria-label="Zamknij podgląd obrazu">&times;</button>
-        <img id="lightboxImg" src="" alt="" class="max-w-full max-h-[85vh] rounded-xl object-contain shadow-2xl transform scale-95 transition-all duration-300">
-        <p id="lightboxCaption" class="text-white mt-4 text-center text-sm font-medium bg-stone-900/50 px-4 py-2 rounded-xl border border-stone-800"></p>
-    </div>
-
-
-    <!-- DYNAMICZNA LOGIKA STRONY -->
     <script>
-        let isAdmin = localStorage.getItem('stonoga_admin') === 'true';
-        let isMaintenance = localStorage.getItem('stonoga_maintenance') === 'true';
-        let currentFilter = 'wszystkie';
-        let timerIntervals = [];
+        // Mouse glow light effect
+        const cursorLight = document.getElementById('cursor-light');
+        document.addEventListener('mousemove', (e) => {
+            cursorLight.style.left = e.clientX + 'px';
+            cursorLight.style.top = e.clientY + 'px';
+        });
 
-        const categoryConfig = {
-            ogloszenia: { label: '📣 Ogłoszenia', style: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
-            zdjecia: { label: '📷 Zdjęcia z wyjść', style: 'bg-amber-50 text-amber-700 border-amber-100' },
-            kadra: { label: '🛡️ Kadra', style: 'bg-blue-50 text-blue-700 border-blue-100' },
-            partnerstwa: { label: '🤝 Partnerstwa', style: 'bg-purple-50 text-purple-700 border-purple-100' }
-        };
+        // PIN logic
+        let enteredPin = '';
+        const correctPin = '1234';
 
-        window.onload = function() {
-            if (!localStorage.getItem('stonoga_posts')) {
-                localStorage.setItem('stonoga_posts', JSON.stringify([]));
-            }
-            if (localStorage.getItem('wcag_contrast') === 'true') document.body.classList.add('high-contrast');
-            if (localStorage.getItem('wcag_size')) changeTextSize(localStorage.getItem('wcag_size'), false);
-
-            checkMaintenanceMode();
-            updateAdminUI();
-            renderPosts();
-        }
-
-        /* PRZERWA TECHNICZNA */
-        function checkMaintenanceMode() {
-            const screen = document.getElementById('maintenanceScreen');
-            if (isMaintenance && !isAdmin) {
-                screen.classList.remove('hidden');
-            } else {
-                screen.classList.add('hidden');
-            }
-        }
-
-        function toggleMaintenanceMode() {
-            if (!isAdmin) return;
-            isMaintenance = !isMaintenance;
-            localStorage.setItem('stonoga_maintenance', isMaintenance);
-            const btnText = document.getElementById('maintBtnText');
-            const btn = document.getElementById('adminMaintBtn');
-            
-            if(isMaintenance) {
-                btn.className = "bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-3 py-2.5 rounded-xl transition-all flex items-center space-x-1.5 shadow-md animate-pulse";
-                btnText.innerText = "PRZERWA TRWA (Wyłącz)";
-            } else {
-                btn.className = "bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3 py-2.5 rounded-xl transition-all flex items-center space-x-1.5 shadow-md";
-                btnText.innerText = "Przerwa Techniczna";
-            }
-            checkMaintenanceMode();
-        }
-
-        /* USTAWIENIA WCAG */
-        function toggleHighContrast() {
-            const hc = document.body.classList.toggle('high-contrast');
-            localStorage.setItem('wcag_contrast', hc);
-        }
-
-        function changeTextSize(size, save = true) {
-            document.body.classList.remove('text-lg', 'text-xl');
-            if(size === 'lg') document.body.classList.add('text-lg');
-            if(size === 'xl') document.body.classList.add('text-xl');
-            if(save) localStorage.setItem('wcag_size', size);
-        }
-
-        function setCategory(category) {
-            currentFilter = category;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.classList.remove('bg-emerald-600', 'text-white', 'shadow-sm', 'active-cat');
-                btn.classList.add('bg-white', 'text-stone-600', 'border-stone-200');
-                btn.setAttribute('aria-selected', 'false');
-            });
-
-            const activeBtn = document.getElementById(`cat-${category}`);
-            activeBtn.classList.remove('bg-white', 'text-stone-600', 'border-stone-200');
-            activeBtn.classList.add('bg-emerald-600', 'text-white', 'shadow-sm', 'active-cat');
-            activeBtn.setAttribute('aria-selected', 'true');
-
-            renderPosts();
-        }
-
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-            if(id === 'loginModal') {
-                document.getElementById('loginForm').reset();
-                document.getElementById('loginError').classList.add('hidden');
-            }
-            if(id === 'postModal') {
-                document.getElementById('postForm').reset();
-                document.getElementById('photoUploadSection').classList.add('hidden');
-                document.getElementById('timerFields').classList.add('hidden');
-            }
-        }
-
-        function togglePhotoInput(category) {
-            const section = document.getElementById('photoUploadSection');
-            if(category === 'zdjecia') {
-                section.classList.remove('hidden');
-            } else {
-                section.classList.add('hidden');
-            }
-        }
-
-        function compressAndResizeImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        const MAX_WIDTH = 1000;
-                        if (width > MAX_WIDTH) {
-                            height *= MAX_WIDTH / width;
-                            width = MAX_WIDTH;
-                        }
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.65));
-                    };
-                    img.src = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        async function getProcessedPhotos() {
-            const fileInput = document.getElementById('postPhotos');
-            if (!fileInput || fileInput.files.length === 0) return [];
-            const promises = Array.from(fileInput.files).map(file => compressAndResizeImage(file));
-            return Promise.all(promises);
-        }
-
-        async function savePost(e) {
-            e.preventDefault();
-            if(!isAdmin) return;
-
-            const category = document.getElementById('postCategory').value;
-            const title = document.getElementById('postTitle').value;
-            const description = document.getElementById('postDescription').value;
-            const date = new Date().toLocaleDateString('pl-PL', { hour: '2-digit', minute: '2-digit' });
-            
-            let photos = [];
-            if(category === 'zdjecia') {
-                photos = await getProcessedPhotos();
-            }
-
-            let timerData = null;
-            if(document.getElementById('enableTimer').checked) {
-                timerData = {
-                    name: document.getElementById('timerName').value || 'Wydarzenie klubowe',
-                    desc: document.getElementById('timerDesc').value || '',
-                    targetDate: document.getElementById('timerDate').value
-                };
-            }
-
-            const posts = JSON.parse(localStorage.getItem('stonoga_posts')) || [];
-            posts.unshift({ id: Date.now(), category, title, description, date, photos, timer: timerData, comments: [] });
-            
-            localStorage.setItem('stonoga_posts', JSON.stringify(posts));
-            closeModal('postModal');
-            renderPosts();
-        }
-
-        function deletePost(id) {
-            if (!isAdmin) return;
-            if (confirm("Usunąć trwale ten wpis?")) {
-                let posts = JSON.parse(localStorage.getItem('stonoga_posts')) || [];
-                posts = posts.filter(post => post.id !== id);
-                localStorage.setItem('stonoga_posts', JSON.stringify(posts));
-                renderPosts();
-            }
-        }
-
-        /* LIVE TIMERS */
-        function startLiveTimers() {
-            timerIntervals.forEach(clearInterval);
-            timerIntervals = [];
-
-            const elements = document.querySelectorAll('.live-timer-box');
-            elements.forEach(el => {
-                const targetTime = new Date(el.dataset.target).getTime();
-                const timerId = el.dataset.id;
-
-                const update = () => {
-                    const now = new Date().getTime();
-                    const diff = targetTime - now;
-
-                    if (diff <= 0) {
-                        el.innerHTML = `<span class="text-emerald-600 font-bold text-xs bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">Wydarzenie już się rozpoczęło!</span>`;
-                        return;
-                    }
-
-                    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-                    const view = document.getElementById(`time-render-${timerId}`);
-                    if(view) {
-                        view.innerHTML = `
-                            <div class="flex space-x-1.5 text-center">
-                                <div class="bg-stone-900 text-white px-2 py-1 rounded-md text-xs font-bold">${days}d</div>
-                                <div class="bg-stone-900 text-white px-2 py-1 rounded-md text-xs font-bold">${hours}h</div>
-                                <div class="bg-stone-900 text-white px-2 py-1 rounded-md text-xs font-bold">${minutes}m</div>
-                                <div class="bg-stone-900 text-white px-2 py-1 rounded-md text-xs font-bold">${seconds}s</div>
-                            </div>
-                        `;
-                    }
-                };
-
-                update();
-                timerIntervals.push(setInterval(update, 1000));
-            });
-        }
-
-        function openLightbox(src, altText) {
-            const modal = document.getElementById('lightboxModal');
-            const img = document.getElementById('lightboxImg');
-            img.src = src;
-            img.alt = altText;
-            document.getElementById('lightboxCaption').innerText = altText;
-            modal.classList.remove('hidden');
-            setTimeout(() => img.classList.remove('scale-95'), 50);
-        }
-
-        function closeLightbox() {
-            document.getElementById('lightboxImg').classList.add('scale-95');
-            setTimeout(() => document.getElementById('lightboxModal').classList.add('hidden'), 150);
-        }
-
-        function addComment(e, postId) {
-            e.preventDefault();
-            const authorInput = document.getElementById(`author-${postId}`);
-            const textInput = document.getElementById(`text-${postId}`);
-
-            if(!authorInput.value.trim() || !textInput.value.trim()) return;
-
-            const posts = JSON.parse(localStorage.getItem('stonoga_posts')) || [];
-            const postIndex = posts.findIndex(p => p.id === postId);
-
-            if(postIndex !== -1) {
-                posts[postIndex].comments.push({
-                    id: Date.now(),
-                    author: authorInput.value.trim(),
-                    text: textInput.value.trim(),
-                    date: new Date().toLocaleDateString('pl-PL', { hour: '2-digit', minute: '2-digit' })
-                });
-                localStorage.setItem('stonoga_posts', JSON.stringify(posts));
-                renderPosts();
-            }
-        }
-
-        function deleteComment(postId, commentId) {
-            if(!isAdmin) return;
-            const posts = JSON.parse(localStorage.getItem('stonoga_posts')) || [];
-            const postIndex = posts.findIndex(p => p.id === postId);
-
-            if(postIndex !== -1) {
-                posts[postIndex].comments = posts[postIndex].comments.filter(c => c.id !== commentId);
-                localStorage.setItem('stonoga_posts', JSON.stringify(posts));
-                renderPosts();
-            }
-        }
-
-        function renderPosts() {
-            const container = document.getElementById('postsContainer');
-            let posts = JSON.parse(localStorage.getItem('stonoga_posts')) || [];
-
-            if (currentFilter !== 'wszystkie') {
-                posts = posts.filter(post => post.category === currentFilter);
-            }
-
-            if (posts.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-16 bg-white rounded-2xl border border-stone-200/60 shadow-xs animate-fade-in-up">
-                        <p class="text-sm font-semibold text-stone-700">Brak rekordów w tej sekcji.</p>
-                    </div>`;
-                return;
-            }
-
-            container.innerHTML = posts.map((post, postIndex) => {
-                const config = categoryConfig[post.category] || { label: 'Ogólne', style: 'bg-stone-100 text-stone-700' };
+        function pressKey(digit) {
+            if (enteredPin.length < 4) {
+                enteredPin += digit;
+                updateDots();
                 
-                let imagesGridHtml = '';
-                if(post.photos && post.photos.length > 0) {
-                    imagesGridHtml = `
-                        <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2" role="region" aria-label="Galeria zdjęć">
-                            ${post.photos.map((imgSrc, index) => `
-                                <button onclick="openLightbox('${imgSrc}', 'Zdjęcie nr ${index+1} z galerii')" 
-                                        class="overflow-hidden rounded-xl bg-stone-100 border border-stone-200 aspect-video group/img relative focus-visible:outline-3 transition-all duration-300 hover:shadow-md hover:scale-[102%]">
-                                    <img src="${imgSrc}" alt="Zdjęcie z wyprawy" class="w-full h-full object-cover">
-                                </button>
-                            `).join('')}
-                        </div>
-                    `;
+                event.currentTarget.classList.add('pressed');
+                setTimeout(() => {
+                    event.currentTarget.classList.remove('pressed');
+                }, 150);
+
+                if (enteredPin.length === 4) {
+                    setTimeout(verifyPin, 250);
                 }
-
-                let timerHtml = '';
-                if(post.timer && post.timer.targetDate) {
-                    timerHtml = `
-                        <div class="mt-4 p-4 bg-stone-50 rounded-xl border border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 live-timer-box" data-target="${post.timer.targetDate}" data-id="${post.id}">
-                            <div>
-                                <div class="text-xs font-black text-stone-900 uppercase tracking-wider">${escapeHtml(post.timer.name)}</div>
-                                <div class="text-[11px] text-stone-500">${escapeHtml(post.timer.desc)}</div>
-                            </div>
-                            <div id="time-render-${post.id}"></div>
-                        </div>
-                    `;
-                }
-
-                const commentsHtml = post.comments && post.comments.length > 0 
-                    ? post.comments.map(c => `
-                        <div class="bg-stone-50/70 p-3 rounded-xl border border-stone-100 text-xs relative group/item">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-stone-900">${escapeHtml(c.author)}</span>
-                                <span class="text-[10px] text-stone-400">${c.date}</span>
-                            </div>
-                            <p class="text-stone-600 leading-relaxed">${escapeHtml(c.text)}</p>
-                            ${isAdmin ? `
-                                <button onclick="deleteComment(${post.id}, ${c.id})" class="absolute top-2 right-2 text-rose-500 hover:text-rose-700 text-[10px] bg-white p-1 rounded-md border border-stone-100" aria-label="Usuń komentarz">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            ` : ''}
-                        </div>
-                    `).join('')
-                    : `<p class="text-xs text-stone-400 italic pl-1">Brak komentarzy.</p>`;
-
-                return `
-                    <article class="bg-white rounded-2xl border border-stone-200/60 shadow-sm overflow-hidden transition-all duration-300 hover:shadow-md animate-fade-in-up" style="animation-delay: ${postIndex * 0.05}s;" role="article">
-                        <div class="p-6">
-                            <div class="flex flex-wrap items-center gap-2 mb-3">
-                                <span class="text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${config.style}">
-                                    ${config.label}
-                                </span>
-                                <span class="text-[11px] font-semibold text-stone-400 bg-stone-50 border border-stone-100 px-2 py-0.5 rounded-md ml-auto">
-                                    ${post.date}
-                                </span>
-                            </div>
-                            
-                            <h3 class="text-lg font-bold text-stone-900 tracking-tight mb-2">${escapeHtml(post.title)}</h3>
-                            <p class="text-stone-600 text-sm leading-relaxed whitespace-pre-wrap">${escapeHtml(post.description)}</p>
-                            
-                            ${imagesGridHtml}
-                            ${timerHtml}
-                            
-                            ${isAdmin ? `
-                                <div class="mt-4 pt-3 border-t border-stone-100 flex justify-end">
-                                    <button onclick="deletePost(${post.id})" class="text-rose-600 hover:text-rose-700 text-xs font-semibold flex items-center bg-rose-50/50 hover:bg-rose-50 px-3 py-1.5 rounded-xl border border-rose-100/40 transition-all hover:scale-105">
-                                        <i class="fa-solid fa-trash-can mr-1.5"></i> Usuń ten wpis
-                                    </button>
-                                </div>
-                            ` : ''}
-                        </div>
-                        
-                        <div class="bg-stone-50/40 border-t border-stone-100 p-6 space-y-4">
-                            <div class="space-y-2.5 max-h-52 overflow-y-auto pr-1">
-                                ${commentsHtml}
-                            </div>
-                            <form onsubmit="addComment(event, ${post.id})" class="bg-white p-3 rounded-xl border border-stone-200/80 space-y-2">
-                                <div class="flex flex-col md:flex-row gap-2">
-                                    <input type="text" id="author-${post.id}" required placeholder="Podpis..." class="md:w-1/4 px-3 py-2 text-xs bg-stone-50 border border-stone-200 rounded-lg focus:outline-none">
-                                    <input type="text" id="text-${post.id}" required placeholder="Zostaw komentarz..." class="md:w-3/4 px-3 py-2 text-xs bg-stone-50 border border-stone-200 rounded-lg focus:outline-none">
-                                </div>
-                                <div class="flex justify-end">
-                                    <button type="submit" class="bg-stone-900 hover:bg-stone-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-lg flex items-center shadow-xs transition-all hover:scale-105">
-                                        <span>Wyślij</span>
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </article>
-                `;
-            }).join('');
-
-            startLiveTimers();
-        }
-
-        function loginAdmin(e) {
-            e.preventDefault();
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value;
-
-            if (user === 'admin' && pass === 'admin123@') {
-                isAdmin = true;
-                localStorage.setItem('stonoga_admin', 'true');
-                closeModal('loginModal');
-                updateAdminUI();
-                checkMaintenanceMode();
-                renderPosts();
-            } else {
-                document.getElementById('loginError').classList.remove('hidden');
             }
         }
 
-        function logoutAdmin() {
-            isAdmin = false;
-            localStorage.setItem('stonoga_admin', 'false');
-            updateAdminUI();
-            checkMaintenanceMode();
-            renderPosts();
-        }
-
-        function updateAdminUI() {
-            const loginBtn = document.getElementById('loginBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const adminIndicator = document.getElementById('adminIndicator');
-            const adminPostBtn = document.getElementById('adminPostBtn');
-            const adminMaintBtn = document.getElementById('adminMaintBtn');
-
-            if (isAdmin) {
-                if(loginBtn) loginBtn.classList.add('hidden');
-                if(logoutBtn) logoutBtn.classList.remove('hidden');
-                if(adminIndicator) adminIndicator.classList.remove('hidden');
-                if(adminPostBtn) adminPostBtn.classList.remove('hidden');
-                if(adminMaintBtn) {
-                    adminMaintBtn.classList.remove('hidden');
-                    const btnText = document.getElementById('maintBtnText');
-                    if(isMaintenance) {
-                        adminMaintBtn.className = "bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs px-3 py-2.5 rounded-xl transition-all flex items-center space-x-1.5 shadow-md animate-pulse";
-                        if(btnText) btnText.innerText = "PRZERWA TRWA (Wyłącz)";
-                    } else {
-                        adminMaintBtn.className = "bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs px-3 py-2.5 rounded-xl transition-all flex items-center space-x-1.5 shadow-md";
-                        if(btnText) btnText.innerText = "Przerwa Techniczna";
-                    }
-                }
-            } else {
-                if(loginBtn) loginBtn.classList.remove('hidden');
-                if(logoutBtn) logoutBtn.classList.add('hidden');
-                if(adminIndicator) adminIndicator.classList.add('hidden');
-                if(adminPostBtn) adminPostBtn.classList.add('hidden');
-                if(adminMaintBtn) adminMaintBtn.classList.add('hidden');
+        function deleteKey() {
+            if (enteredPin.length > 0) {
+                enteredPin = enteredPin.slice(0, -1);
+                updateDots();
+                hideError();
             }
         }
 
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        function updateDots() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i < enteredPin.length) {
+                    dot.classList.add('bg-[#e0a9a3]', 'border-[#e0a9a3]', 'scale-125', 'shadow-[0_0_10px_rgba(224,169,163,0.8)]');
+                } else {
+                    dot.classList.remove('bg-[#e0a9a3]', 'border-[#e0a9a3]', 'scale-125', 'shadow-[0_0_10px_rgba(224,169,163,0.8)]');
+                }
+            }
         }
+
+        function verifyPin() {
+            if (enteredPin === correctPin) {
+                const lockScreen = document.getElementById('lock-screen');
+                const loveContent = document.getElementById('love-content');
+
+                lockScreen.style.opacity = '0';
+                lockScreen.style.transform = 'scale(0.92)';
+                
+                setTimeout(() => {
+                    lockScreen.classList.add('hidden');
+                    loveContent.classList.remove('hidden');
+                    setTimeout(() => {
+                        loveContent.classList.remove('opacity-0', 'translate-y-6');
+                    }, 50);
+                }, 400);
+
+                calculateDays();
+            } else {
+                showError();
+                shakeLockScreen();
+                setTimeout(() => {
+                    enteredPin = '';
+                    updateDots();
+                }, 400);
+            }
+        }
+
+        function showError() {
+            const errorEl = document.getElementById('pin-error');
+            errorEl.style.opacity = '1';
+        }
+
+        function hideError() {
+            const errorEl = document.getElementById('pin-error');
+            errorEl.style.opacity = '0';
+        }
+
+        function shakeLockScreen() {
+            const screen = document.getElementById('lock-screen');
+            screen.classList.add('animate-pulse');
+            screen.style.transform = 'translateX(8px)';
+            setTimeout(() => { screen.style.transform = 'translateX(-8px)'; }, 100);
+            setTimeout(() => { screen.style.transform = 'translateX(6px)'; }, 200);
+            setTimeout(() => { screen.style.transform = 'translateX(0)'; screen.classList.remove('animate-pulse'); }, 300);
+        }
+
+        function returnToLock() {
+            enteredPin = '';
+            updateDots();
+            hideError();
+
+            const lockScreen = document.getElementById('lock-screen');
+            const loveContent = document.getElementById('love-content');
+
+            loveContent.classList.add('opacity-0', 'translate-y-6');
+            
+            setTimeout(() => {
+                loveContent.classList.add('hidden');
+                lockScreen.classList.remove('hidden');
+                lockScreen.style.opacity = '1';
+                lockScreen.style.transform = 'scale(1)';
+            }, 400);
+        }
+
+        function calculateDays() {
+            const startDate = new Date('2026-08-28');
+            const today = new Date();
+            const diffTime = today - startDate;
+            const diffDays = Math.max(0, Math.floor(diffTime / (1000 * 60 * 60 * 24)));
+            document.getElementById('days-count').innerText = diffDays;
+        }
+
+        // Letter Open / Close logic
+        function openLetter() {
+            document.getElementById('envelope-closed').classList.add('hidden');
+            const openView = document.getElementById('envelope-open');
+            openView.classList.remove('hidden');
+        }
+
+        function closeLetter() {
+            document.getElementById('envelope-open').classList.add('hidden');
+            document.getElementById('envelope-closed').classList.remove('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key >= '0' && e.key <= '9') {
+                if (!document.getElementById('lock-screen').classList.contains('hidden')) {
+                    pressKey(e.key);
+                }
+            } else if (e.key === 'Backspace') {
+                if (!document.getElementById('lock-screen').classList.contains('hidden')) {
+                    deleteKey();
+                }
+            }
+        });
     </script>
 </body>
 </html>
