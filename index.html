@@ -96,6 +96,15 @@
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
             font-family: 'Playfair Display', serif;
         }
+
+        /* Style dla nowych elementów */
+        .timeline-item-new {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-[#c5837c] selection:text-white relative">
@@ -111,6 +120,7 @@
 
     <!-- Top Navigation Header -->
     <header class="w-full py-6 px-6 text-center z-40 relative border-b border-[#c5837c]/10 bg-[#07070a]/80 backdrop-blur-md">
+        <!-- Sekretne kliknięcie w ten div (3 razy) otwiera panel admina -->
         <div class="inline-flex items-center gap-3 cursor-pointer group" onclick="returnToLock()">
             <span class="text-[#e0a9a3] text-2xl floating-rose">🌹</span>
             <h1 class="font-serif text-2xl md:text-3xl tracking-wider text-stone-100 font-medium group-hover:text-[#e0a9a3] transition-colors">
@@ -118,7 +128,7 @@
             </h1>
             <span class="text-[#e0a9a3] text-2xl floating-rose" style="animation-delay: 2.5s;">✨</span>
         </div>
-        <p class="text-xs text-stone-400 tracking-[0.25em] uppercase mt-1 font-light">Strefa Naszej Miłości</p>
+        <p class="text-xs text-stone-400 tracking-[0.25em] uppercase mt-1 font-light cursor-pointer select-none" onclick="handleSecretClick(event)">Strefa Naszej Miłości</p>
     </header>
 
     <main class="flex-grow flex items-center justify-center p-4 z-10 relative my-8">
@@ -279,41 +289,15 @@
             <div class="glass-panel p-8 md:p-12 rounded-[2.5rem]">
                 <div class="text-center mb-10">
                     <h3 class="font-serif text-2xl md:text-3xl font-medium text-stone-100">Nasza Oś Czasu</h3>
-                    <p class="text-stone-400 text-xs tracking-wider mt-1">Dwa najważniejsze momenty, które nas połączyły</p>
+                    <p class="text-stone-400 text-xs tracking-wider mt-1">Najważniejsze momenty, które nas połączyły</p>
                 </div>
 
-                <div class="relative border-l border-[#c5837c]/30 ml-4 md:ml-32 space-y-12">
-                    <div class="relative pl-8 md:pl-12 group">
-                        <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-stone-950 border-2 border-[#e0a9a3] flex items-center justify-center text-[#e0a9a3] text-xs shadow-lg">✨</div>
-                        <div class="absolute -left-36 top-1.5 hidden md:block text-right w-24">
-                            <span class="text-[#e0a9a3] font-serif font-bold text-sm">28.08.2026</span>
-                        </div>
-                        <div class="bg-black/30 border border-[#c5837c]/15 p-6 rounded-2xl hover:border-[#e0a9a3]/40 transition-all">
-                            <span class="md:hidden inline-block text-[#e0a9a3] font-serif font-bold text-xs mb-2">28.08.2026</span>
-                            <h4 class="font-serif text-xl font-medium text-stone-100 mb-2">Dzień, w którym się poznaliśmy</h4>
-                            <p class="text-stone-400 text-sm font-light leading-relaxed">
-                                Data, od której wszystko się zaczęło. Spotkanie, które odmieniło nasz świat i sprawiło, że nasze drogi splotły się na zawsze.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="relative pl-8 md:pl-12 group">
-                        <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-stone-950 border-2 border-[#e0a9a3] flex items-center justify-center text-[#e0a9a3] text-xs shadow-lg">🌹</div>
-                        <div class="absolute -left-36 top-1.5 hidden md:block text-right w-24">
-                            <span class="text-[#e0a9a3] font-serif font-bold text-sm">30.08.2026</span>
-                        </div>
-                        <div class="bg-black/30 border border-[#c5837c]/15 p-6 rounded-2xl hover:border-[#e0a9a3]/40 transition-all">
-                            <span class="md:hidden inline-block text-[#e0a9a3] font-serif font-bold text-xs mb-2">30.08.2026</span>
-                            <h4 class="font-serif text-xl font-medium text-stone-100 mb-2">Nasza Pierwsza Randka</h4>
-                            <p class="text-stone-400 text-sm font-light leading-relaxed">
-                                Magiczne spotkanie we dwoje, pełne długich rozmów, uśmiechów i poczucia, że odnaleźliśmy kogoś wyjątkowego.
-                            </p>
-                        </div>
-                    </div>
+                <div id="timeline-container" class="relative border-l border-[#c5837c]/30 ml-4 md:ml-32 space-y-12">
+                    <!-- Domyślne wpisy (zostaną nadpisane przez JS jeśli są w localStorage) -->
                 </div>
             </div>
 
-            <!-- Gallery Section (4 Imgur Photos - Completely Without Descriptions) -->
+            <!-- Gallery Section -->
             <div class="glass-panel p-8 md:p-10 rounded-[2.5rem]">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
                     <div>
@@ -322,23 +306,8 @@
                     </div>
                     <span class="px-4 py-1.5 rounded-full bg-[#c5837c]/10 text-[#e0a9a3] text-xs font-medium border border-[#c5837c]/20">Wspomnienia</span>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <!-- Photo 1: https://imgur.com/bg1rwUc -->
-                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
-                        <img src="https://imgur.com/bg1rwUc.png" alt="Wiktoria i Karol 1" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+1'">
-                    </div>
-                    <!-- Photo 2: https://imgur.com/emN2Ha1 -->
-                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
-                        <img src="https://imgur.com/emN2Ha1.png" alt="Wiktoria i Karol 2" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+2'">
-                    </div>
-                    <!-- Photo 3: https://imgur.com/1eK6gQC -->
-                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
-                        <img src="https://imgur.com/1eK6gQC.png" alt="Wiktoria i Karol 3" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+3'">
-                    </div>
-                    <!-- Photo 4: https://imgur.com/cSu0IQW -->
-                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
-                        <img src="https://imgur.com/cSu0IQW.png" alt="Wiktoria i Karol 4" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=W+%26+K+4'">
-                    </div>
+                <div id="gallery-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- Zdjęcia generowane przez JS -->
                 </div>
             </div>
 
@@ -358,6 +327,64 @@
         <p>Stworzone z miłością dla <span class="text-[#e0a9a3] font-medium">Wiktoria + Karol</span> &copy; 2026</p>
     </footer>
 
+    <!-- ================= ADMIN PANEL MODAL ================= -->
+    <div id="admin-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-stone-900 border border-[#c5837c]/30 rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+            
+            <!-- Admin Login -->
+            <div id="admin-login" class="p-8 text-center">
+                <div class="w-16 h-16 mx-auto rounded-full bg-[#c5837c]/20 flex items-center justify-center text-3xl mb-4 border border-[#c5837c]/40">🔐</div>
+                <h3 class="font-serif text-2xl text-stone-100 mb-2">Panel Administratora</h3>
+                <p class="text-stone-400 text-xs mb-6">Podaj hasło, aby edytować strefę</p>
+                
+                <input type="password" id="admin-password" placeholder="Hasło..." class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-3 text-center text-stone-100 focus:outline-none focus:border-[#e0a9a3] mb-4 transition-colors">
+                
+                <div id="admin-error" class="text-rose-400 text-xs mb-4 hidden">Błędne hasło! Spróbuj ponownie.</div>
+                
+                <div class="flex gap-3">
+                    <button onclick="closeAdminModal()" class="flex-1 py-3 bg-stone-800 hover:bg-stone-700 text-stone-300 rounded-xl transition-colors text-sm font-medium cursor-pointer">Anuluj</button>
+                    <button onclick="loginAdmin()" class="flex-1 py-3 bg-[#c5837c] hover:bg-[#e0a9a3] text-stone-950 rounded-xl transition-colors text-sm font-bold cursor-pointer shadow-lg">Zaloguj</button>
+                </div>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div id="admin-dashboard" class="hidden p-6 md:p-8 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                <div class="flex justify-between items-center mb-6 border-b border-[#c5837c]/20 pb-4">
+                    <h3 class="font-serif text-xl text-stone-100">Zarządzanie Treścią</h3>
+                    <button onclick="closeAdminModal()" class="text-stone-400 hover:text-rose-400 text-2xl leading-none cursor-pointer">&times;</button>
+                </div>
+
+                <!-- Add Timeline Item -->
+                <div class="mb-8 bg-black/20 p-5 rounded-2xl border border-[#c5837c]/10">
+                    <h4 class="font-medium text-[#e0a9a3] mb-4 text-sm uppercase tracking-wider">Dodaj do Osi Czasu</h4>
+                    <div class="space-y-3">
+                        <input type="text" id="new-tl-date" placeholder="Data (np. 15.09.2026)" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
+                        <input type="text" id="new-tl-emoji" placeholder="Emoji (np. 💖)" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
+                        <input type="text" id="new-tl-title" placeholder="Tytuł wydarzenia" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
+                        <textarea id="new-tl-desc" placeholder="Krótki opis..." rows="2" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]"></textarea>
+                        <button onclick="addTimelineItem()" class="w-full py-3 bg-[#c5837c] hover:bg-[#e0a9a3] text-stone-950 font-bold rounded-xl transition-colors text-sm shadow-md cursor-pointer mt-2">Dodaj wydarzenie</button>
+                    </div>
+                </div>
+
+                <!-- Add Gallery Image -->
+                <div class="mb-8 bg-black/20 p-5 rounded-2xl border border-[#c5837c]/10">
+                    <h4 class="font-medium text-[#e0a9a3] mb-4 text-sm uppercase tracking-wider">Dodaj zdjęcie do Galerii</h4>
+                    <div class="space-y-3">
+                        <input type="text" id="new-img-url" placeholder="Wklej bezpośredni link (np. https://i.imgur.com/....jpg)" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
+                        <button onclick="addGalleryImage()" class="w-full py-3 bg-[#c5837c] hover:bg-[#e0a9a3] text-stone-950 font-bold rounded-xl transition-colors text-sm shadow-md cursor-pointer mt-2">Dodaj zdjęcie</button>
+                    </div>
+                </div>
+
+                <!-- Danger Zone -->
+                <div class="bg-rose-950/30 p-5 rounded-2xl border border-rose-900/50">
+                    <h4 class="font-medium text-rose-400 mb-2 text-sm uppercase tracking-wider">Strefa zagrożenia</h4>
+                    <p class="text-stone-400 text-xs mb-3">Czy chcesz zresetować wszystkie dodane zdjęcia i wpisy do stanu początkowego?</p>
+                    <button onclick="resetContent()" class="w-full py-2.5 bg-rose-900/50 hover:bg-rose-800 text-rose-200 border border-rose-700/50 rounded-xl transition-colors text-xs font-bold shadow-md cursor-pointer">Resetuj treść (Usuń moje zmiany)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Mouse glow light effect
         const cursorLight = document.getElementById('cursor-light');
@@ -366,7 +393,96 @@
             cursorLight.style.top = e.clientY + 'px';
         });
 
-        // PIN logic
+        // ================= DEFAULT DATA =================
+        const defaultTimeline = [
+            {
+                date: '28.08.2026',
+                emoji: '✨',
+                title: 'Dzień, w którym się poznaliśmy',
+                desc: 'Data, od której wszystko się zaczęło. Spotkanie, które odmieniło nasz świat i sprawiło, że nasze drogi splotły się na zawsze.'
+            },
+            {
+                date: '30.08.2026',
+                emoji: '🌹',
+                title: 'Nasza Pierwsza Randka',
+                desc: 'Magiczne spotkanie we dwoje, pełne długich rozmów, uśmiechów i poczucia, że odnaleźliśmy kogoś wyjątkowego.'
+            }
+        ];
+
+        const defaultGallery = [
+            'https://imgur.com/bg1rwUc.png',
+            'https://imgur.com/emN2Ha1.png',
+            'https://imgur.com/1eK6gQC.png',
+            'https://imgur.com/cSu0IQW.png'
+        ];
+
+        // ================= STATE =================
+        let timelineData = [];
+        let galleryData = [];
+
+        // ================= INITIALIZATION =================
+        function loadData() {
+            const storedTl = localStorage.getItem('wk_timeline');
+            const storedGal = localStorage.getItem('wk_gallery');
+
+            if (storedTl) {
+                timelineData = JSON.parse(storedTl);
+            } else {
+                timelineData = [...defaultTimeline];
+                localStorage.setItem('wk_timeline', JSON.stringify(timelineData));
+            }
+
+            if (storedGal) {
+                galleryData = JSON.parse(storedGal);
+            } else {
+                galleryData = [...defaultGallery];
+                localStorage.setItem('wk_gallery', JSON.stringify(galleryData));
+            }
+
+            renderTimeline();
+            renderGallery();
+        }
+
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = '';
+
+            timelineData.forEach((item, index) => {
+                // If it's a newly added item, add animation class
+                const animClass = index < defaultTimeline.length ? '' : 'timeline-item-new';
+                
+                const html = `
+                    <div class="relative pl-8 md:pl-12 group ${animClass}">
+                        <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-stone-950 border-2 border-[#e0a9a3] flex items-center justify-center text-[#e0a9a3] text-xs shadow-lg">${item.emoji || '❤️'}</div>
+                        <div class="absolute -left-36 top-1.5 hidden md:block text-right w-24">
+                            <span class="text-[#e0a9a3] font-serif font-bold text-sm">${item.date}</span>
+                        </div>
+                        <div class="bg-black/30 border border-[#c5837c]/15 p-6 rounded-2xl hover:border-[#e0a9a3]/40 transition-all">
+                            <span class="md:hidden inline-block text-[#e0a9a3] font-serif font-bold text-xs mb-2">${item.date}</span>
+                            <h4 class="font-serif text-xl font-medium text-stone-100 mb-2">${item.title}</h4>
+                            <p class="text-stone-400 text-sm font-light leading-relaxed">${item.desc}</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function renderGallery() {
+            const container = document.getElementById('gallery-container');
+            container.innerHTML = '';
+
+            galleryData.forEach((url, index) => {
+                const html = `
+                    <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
+                        <img src="${url}" alt="Wspomnienie ${index + 1}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=Brak+Zdjecia'">
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // ================= PIN LOGIC =================
         let enteredPin = '';
         const correctPin = '1234';
 
@@ -500,6 +616,113 @@
                 }
             }
         });
+
+        // ================= ADMIN PANEL LOGIC =================
+        const ADMIN_PASSWORD = "wiktoria wiktoria123";
+        let clickCount = 0;
+        let clickTimeout;
+
+        // Funkcja wywoływana po kliknięciu w napis "Strefa Naszej Miłości"
+        function handleSecretClick(e) {
+            clickCount++;
+            clearTimeout(clickTimeout);
+            
+            // Jeśli kliknięto 3 razy w ciągu 1 sekundy
+            if (clickCount >= 3) {
+                clickCount = 0;
+                document.getElementById('lock-screen').classList.add('hidden');
+                document.getElementById('love-content').classList.add('hidden');
+                openAdminModal();
+            } else {
+                clickTimeout = setTimeout(() => { clickCount = 0; }, 1000);
+            }
+        }
+
+        function openAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            // Mały opóźnienie dla animacji opacity
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            document.getElementById('admin-login').classList.remove('hidden');
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-password').value = '';
+            document.getElementById('admin-error').classList.add('hidden');
+        }
+
+        function closeAdminModal() {
+            const modal = document.getElementById('admin-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.getElementById('lock-screen').classList.remove('hidden');
+            }, 300);
+        }
+
+        function loginAdmin() {
+            const pass = document.getElementById('admin-password').value;
+            if (pass === ADMIN_PASSWORD) {
+                document.getElementById('admin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+            } else {
+                document.getElementById('admin-error').classList.remove('hidden');
+            }
+        }
+
+        function addTimelineItem() {
+            const date = document.getElementById('new-tl-date').value;
+            const emoji = document.getElementById('new-tl-emoji').value || '❤️';
+            const title = document.getElementById('new-tl-title').value;
+            const desc = document.getElementById('new-tl-desc').value;
+
+            if (!date || !title) {
+                alert("Proszę podać przynajmniej datę i tytuł!");
+                return;
+            }
+
+            // Dodaj na początek (żeby najnowsze było na górze)
+            timelineData.unshift({ date, emoji, title, desc });
+            localStorage.setItem('wk_timeline', JSON.stringify(timelineData));
+            renderTimeline();
+
+            // Czyszczenie formularza
+            document.getElementById('new-tl-date').value = '';
+            document.getElementById('new-tl-emoji').value = '';
+            document.getElementById('new-tl-title').value = '';
+            document.getElementById('new-tl-desc').value = '';
+
+            alert("Dodano nowe wydarzenie do osi czasu!");
+        }
+
+        function addGalleryImage() {
+            const url = document.getElementById('new-img-url').value;
+
+            if (!url) {
+                alert("Proszę wkleić link do zdjęcia!");
+                return;
+            }
+
+            galleryData.push(url);
+            localStorage.setItem('wk_gallery', JSON.stringify(galleryData));
+            renderGallery();
+
+            document.getElementById('new-img-url').value = '';
+            alert("Pomyślnie dodano zdjęcie do galerii!");
+        }
+
+        function resetContent() {
+            if (confirm("Czy na pewno chcesz usunąć wszystkie dodane wpisy i zdjęcia? Wróci to do stanu początkowego.")) {
+                localStorage.removeItem('wk_timeline');
+                localStorage.removeItem('wk_gallery');
+                loadData(); // Przeładuj domyślne dane
+                alert("Treść została zresetowana.");
+            }
+        }
+
+        // Inicjalizacja przy starcie
+        loadData();
+
     </script>
 </body>
 </html>
