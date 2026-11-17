@@ -1,0 +1,22 @@
+{
+  "timeline": [
+    {
+      "date": "28.08.2026",
+      "emoji": "✨",
+      "title": "Dzień, w którym się poznaliśmy",
+      "desc": "Data, od której wszystko się zaczęło. Spotkanie, które odmieniło nasz świat i sprawiło, że nasze drogi splotły się na zawsze."
+    },
+    {
+      "date": "30.08.2026",
+      "emoji": "🌹",
+      "title": "Nasza Pierwsza Randka",
+      "desc": "Magiczne spotkanie we dwoje, pełne długich rozmów, uśmiechów i poczucia, że odnaleźliśmy kogoś wyjątkowego."
+    }
+  ],
+  "gallery": [
+    "https://imgur.com/bg1rwUc.png",
+    "https://imgur.com/emN2Ha1.png",
+    "https://imgur.com/1eK6gQC.png",
+    "https://imgur.com/cSu0IQW.png"
+  ]
+}
