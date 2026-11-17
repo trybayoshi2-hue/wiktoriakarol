@@ -97,13 +97,20 @@
             font-family: 'Playfair Display', serif;
         }
 
-        /* Style dla nowych elementów */
-        .timeline-item-new {
-            animation: fadeIn 0.5s ease-out forwards;
+        /* Custom scrollbar for admin panel */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(197, 131, 124, 0.4);
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(197, 131, 124, 0.7);
         }
     </style>
 </head>
@@ -120,7 +127,15 @@
 
     <!-- Top Navigation Header -->
     <header class="w-full py-6 px-6 text-center z-40 relative border-b border-[#c5837c]/10 bg-[#07070a]/80 backdrop-blur-md">
-        <!-- Sekretne kliknięcie w ten div (3 razy) otwiera panel admina -->
+        
+        <!-- PRZYCISK ADMINA (ZĘBATKA) -->
+        <button onclick="openAdminModal()" class="absolute right-6 top-1/2 -translate-y-1/2 p-2 rounded-full text-stone-600 hover:text-[#e0a9a3] hover:bg-stone-900/50 transition-all cursor-pointer opacity-40 hover:opacity-100" title="Panel Administratora">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+        </button>
+
         <div class="inline-flex items-center gap-3 cursor-pointer group" onclick="returnToLock()">
             <span class="text-[#e0a9a3] text-2xl floating-rose">🌹</span>
             <h1 class="font-serif text-2xl md:text-3xl tracking-wider text-stone-100 font-medium group-hover:text-[#e0a9a3] transition-colors">
@@ -128,7 +143,7 @@
             </h1>
             <span class="text-[#e0a9a3] text-2xl floating-rose" style="animation-delay: 2.5s;">✨</span>
         </div>
-        <p class="text-xs text-stone-400 tracking-[0.25em] uppercase mt-1 font-light cursor-pointer select-none" onclick="handleSecretClick(event)">Strefa Naszej Miłości</p>
+        <p class="text-xs text-stone-400 tracking-[0.25em] uppercase mt-1 font-light">Strefa Naszej Miłości</p>
     </header>
 
     <main class="flex-grow flex items-center justify-center p-4 z-10 relative my-8">
@@ -160,46 +175,46 @@
 
             <!-- Keypad -->
             <div class="grid grid-cols-3 gap-4 max-w-[270px] mx-auto">
-                <button onclick="pressKey('1')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('1', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">1</span>
                 </button>
-                <button onclick="pressKey('2')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('2', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">2</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">ABC</span>
                 </button>
-                <button onclick="pressKey('3')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('3', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">3</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">DEF</span>
                 </button>
 
-                <button onclick="pressKey('4')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('4', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">4</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">GHI</span>
                 </button>
-                <button onclick="pressKey('5')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('5', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">5</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">JKL</span>
                 </button>
-                <button onclick="pressKey('6')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('6', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">6</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">MNO</span>
                 </button>
 
-                <button onclick="pressKey('7')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('7', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">7</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">PQRS</span>
                 </button>
-                <button onclick="pressKey('8')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('8', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">8</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">TUV</span>
                 </button>
-                <button onclick="pressKey('9')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('9', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">9</span>
                     <span class="text-[9px] tracking-widest text-stone-400 uppercase -mt-1">WXYZ</span>
                 </button>
 
                 <div></div>
-                <button onclick="pressKey('0')" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
+                <button onclick="pressKey('0', event)" class="iphone-btn w-[72px] h-[72px] rounded-full flex flex-col items-center justify-center cursor-pointer mx-auto shadow-md">
                     <span class="text-2xl font-medium text-stone-100">0</span>
                 </button>
                 <button onclick="deleteKey()" class="w-[72px] h-[72px] rounded-full flex items-center justify-center cursor-pointer mx-auto text-stone-400 hover:text-stone-100 transition-colors text-xs font-medium uppercase tracking-wider">
@@ -293,7 +308,7 @@
                 </div>
 
                 <div id="timeline-container" class="relative border-l border-[#c5837c]/30 ml-4 md:ml-32 space-y-12">
-                    <!-- Domyślne wpisy (zostaną nadpisane przez JS jeśli są w localStorage) -->
+                    <!-- Wpisy generowane przez JS -->
                 </div>
             </div>
 
@@ -329,7 +344,7 @@
 
     <!-- ================= ADMIN PANEL MODAL ================= -->
     <div id="admin-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-stone-900 border border-[#c5837c]/30 rounded-[2rem] shadow-2xl w-full max-w-md overflow-hidden transform scale-95 transition-transform duration-300">
+        <div class="bg-stone-900 border border-[#c5837c]/30 rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300">
             
             <!-- Admin Login -->
             <div id="admin-login" class="p-8 text-center">
@@ -354,32 +369,50 @@
                     <button onclick="closeAdminModal()" class="text-stone-400 hover:text-rose-400 text-2xl leading-none cursor-pointer">&times;</button>
                 </div>
 
-                <!-- Add Timeline Item -->
+                <!-- SEKCJA: OŚ CZASU -->
                 <div class="mb-8 bg-black/20 p-5 rounded-2xl border border-[#c5837c]/10">
-                    <h4 class="font-medium text-[#e0a9a3] mb-4 text-sm uppercase tracking-wider">Dodaj do Osi Czasu</h4>
+                    <h4 class="font-medium text-[#e0a9a3] mb-4 text-sm uppercase tracking-wider" id="tl-form-title">Dodaj do Osi Czasu</h4>
+                    <input type="hidden" id="edit-tl-index" value="-1">
+                    
                     <div class="space-y-3">
                         <input type="text" id="new-tl-date" placeholder="Data (np. 15.09.2026)" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
                         <input type="text" id="new-tl-emoji" placeholder="Emoji (np. 💖)" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
                         <input type="text" id="new-tl-title" placeholder="Tytuł wydarzenia" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
                         <textarea id="new-tl-desc" placeholder="Krótki opis..." rows="2" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]"></textarea>
-                        <button onclick="addTimelineItem()" class="w-full py-3 bg-[#c5837c] hover:bg-[#e0a9a3] text-stone-950 font-bold rounded-xl transition-colors text-sm shadow-md cursor-pointer mt-2">Dodaj wydarzenie</button>
+                        
+                        <div class="flex gap-2 mt-2">
+                            <button onclick="saveTimelineItem()" id="tl-save-btn" class="flex-1 py-3 bg-[#c5837c] hover:bg-[#e0a9a3] text-stone-950 font-bold rounded-xl transition-colors text-sm shadow-md cursor-pointer">Dodaj wydarzenie</button>
+                            <button onclick="cancelEditTimeline()" id="tl-cancel-btn" class="hidden px-4 py-3 bg-stone-700 hover:bg-stone-600 text-stone-200 font-bold rounded-xl transition-colors text-sm shadow-md cursor-pointer">Anuluj</button>
+                        </div>
+                    </div>
+
+                    <!-- Lista obecnych wpisów na osi czasu -->
+                    <div class="mt-6 border-t border-[#c5837c]/20 pt-4">
+                        <h5 class="text-xs text-stone-400 uppercase tracking-wider mb-3">Obecne wpisy na osi:</h5>
+                        <div id="admin-timeline-list" class="space-y-2"></div>
                     </div>
                 </div>
 
-                <!-- Add Gallery Image -->
+                <!-- SEKCJA: GALERIA -->
                 <div class="mb-8 bg-black/20 p-5 rounded-2xl border border-[#c5837c]/10">
                     <h4 class="font-medium text-[#e0a9a3] mb-4 text-sm uppercase tracking-wider">Dodaj zdjęcie do Galerii</h4>
                     <div class="space-y-3">
                         <input type="text" id="new-img-url" placeholder="Wklej bezpośredni link (np. https://i.imgur.com/....jpg)" class="w-full bg-black/40 border border-[#c5837c]/30 rounded-xl px-4 py-2.5 text-sm text-stone-100 focus:outline-none focus:border-[#e0a9a3]">
                         <button onclick="addGalleryImage()" class="w-full py-3 bg-[#c5837c] hover:bg-[#e0a9a3] text-stone-950 font-bold rounded-xl transition-colors text-sm shadow-md cursor-pointer mt-2">Dodaj zdjęcie</button>
                     </div>
+
+                    <!-- Lista obecnych zdjęć -->
+                    <div class="mt-6 border-t border-[#c5837c]/20 pt-4">
+                        <h5 class="text-xs text-stone-400 uppercase tracking-wider mb-3">Obecne zdjęcia:</h5>
+                        <div id="admin-gallery-list" class="grid grid-cols-3 gap-2"></div>
+                    </div>
                 </div>
 
                 <!-- Danger Zone -->
                 <div class="bg-rose-950/30 p-5 rounded-2xl border border-rose-900/50">
                     <h4 class="font-medium text-rose-400 mb-2 text-sm uppercase tracking-wider">Strefa zagrożenia</h4>
-                    <p class="text-stone-400 text-xs mb-3">Czy chcesz zresetować wszystkie dodane zdjęcia i wpisy do stanu początkowego?</p>
-                    <button onclick="resetContent()" class="w-full py-2.5 bg-rose-900/50 hover:bg-rose-800 text-rose-200 border border-rose-700/50 rounded-xl transition-colors text-xs font-bold shadow-md cursor-pointer">Resetuj treść (Usuń moje zmiany)</button>
+                    <p class="text-stone-400 text-xs mb-3">Reset przywróci domyślne, początkowe wpisy i zdjęcia.</p>
+                    <button onclick="resetContent()" class="w-full py-2.5 bg-rose-900/50 hover:bg-rose-800 text-rose-200 border border-rose-700/50 rounded-xl transition-colors text-xs font-bold shadow-md cursor-pointer">Resetuj całą treść</button>
                 </div>
             </div>
         </div>
@@ -439,20 +472,17 @@
                 localStorage.setItem('wk_gallery', JSON.stringify(galleryData));
             }
 
-            renderTimeline();
-            renderGallery();
+            renderMainPage();
+            renderAdminLists(); // Odśwież listy w panelu admina
         }
 
-        function renderTimeline() {
-            const container = document.getElementById('timeline-container');
-            container.innerHTML = '';
-
-            timelineData.forEach((item, index) => {
-                // If it's a newly added item, add animation class
-                const animClass = index < defaultTimeline.length ? '' : 'timeline-item-new';
-                
-                const html = `
-                    <div class="relative pl-8 md:pl-12 group ${animClass}">
+        function renderMainPage() {
+            // Render Timeline na stronie głównej
+            const tlContainer = document.getElementById('timeline-container');
+            tlContainer.innerHTML = '';
+            timelineData.forEach((item) => {
+                tlContainer.innerHTML += `
+                    <div class="relative pl-8 md:pl-12 group">
                         <div class="absolute -left-[17px] top-1.5 w-8 h-8 rounded-full bg-stone-950 border-2 border-[#e0a9a3] flex items-center justify-center text-[#e0a9a3] text-xs shadow-lg">${item.emoji || '❤️'}</div>
                         <div class="absolute -left-36 top-1.5 hidden md:block text-right w-24">
                             <span class="text-[#e0a9a3] font-serif font-bold text-sm">${item.date}</span>
@@ -464,21 +494,51 @@
                         </div>
                     </div>
                 `;
-                container.innerHTML += html;
             });
-        }
 
-        function renderGallery() {
-            const container = document.getElementById('gallery-container');
-            container.innerHTML = '';
-
+            // Render Gallery na stronie głównej
+            const galContainer = document.getElementById('gallery-container');
+            galContainer.innerHTML = '';
             galleryData.forEach((url, index) => {
-                const html = `
+                galContainer.innerHTML += `
                     <div class="h-64 rounded-2xl overflow-hidden relative group shadow-xl border border-[#c5837c]/20">
                         <img src="${url}" alt="Wspomnienie ${index + 1}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" onerror="this.src='https://placehold.co/400x400/181824/e0a9a3?text=Brak+Zdjecia'">
                     </div>
                 `;
-                container.innerHTML += html;
+            });
+        }
+
+        function renderAdminLists() {
+            // Render lista osi czasu w panelu admina
+            const adminTlList = document.getElementById('admin-timeline-list');
+            adminTlList.innerHTML = '';
+            timelineData.forEach((item, index) => {
+                adminTlList.innerHTML += `
+                    <div class="flex items-center justify-between bg-black/40 p-3 rounded-lg border border-[#c5837c]/10">
+                        <div class="text-sm text-stone-200 overflow-hidden text-ellipsis whitespace-nowrap w-2/3">
+                            <span class="text-[#e0a9a3] mr-2">${item.date}</span>
+                            ${item.title}
+                        </div>
+                        <div class="flex gap-2 shrink-0">
+                            <button onclick="editTimelineItem(${index})" class="text-blue-400 hover:text-blue-300 p-1 cursor-pointer" title="Edytuj">✏️</button>
+                            <button onclick="deleteTimelineItem(${index})" class="text-rose-400 hover:text-rose-300 p-1 cursor-pointer" title="Usuń">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render lista galerii w panelu admina
+            const adminGalList = document.getElementById('admin-gallery-list');
+            adminGalList.innerHTML = '';
+            galleryData.forEach((url, index) => {
+                adminGalList.innerHTML += `
+                    <div class="relative aspect-square rounded-lg overflow-hidden border border-[#c5837c]/20 group">
+                        <img src="${url}" class="w-full h-full object-cover" onerror="this.src='https://placehold.co/100x100/181824/e0a9a3?text=X'">
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button onclick="deleteGalleryImage(${index})" class="text-rose-400 hover:text-white bg-black/50 p-2 rounded-full cursor-pointer transition-colors" title="Usuń zdjęcie">🗑️</button>
+                        </div>
+                    </div>
+                `;
             });
         }
 
@@ -486,15 +546,17 @@
         let enteredPin = '';
         const correctPin = '1234';
 
-        function pressKey(digit) {
+        function pressKey(digit, event) {
             if (enteredPin.length < 4) {
                 enteredPin += digit;
                 updateDots();
                 
-                event.currentTarget.classList.add('pressed');
-                setTimeout(() => {
-                    event.currentTarget.classList.remove('pressed');
-                }, 150);
+                if (event) {
+                    event.currentTarget.classList.add('pressed');
+                    setTimeout(() => {
+                        event.currentTarget.classList.remove('pressed');
+                    }, 150);
+                }
 
                 if (enteredPin.length === 4) {
                     setTimeout(verifyPin, 250);
@@ -608,7 +670,7 @@
         document.addEventListener('keydown', (e) => {
             if (e.key >= '0' && e.key <= '9') {
                 if (!document.getElementById('lock-screen').classList.contains('hidden')) {
-                    pressKey(e.key);
+                    pressKey(e.key, null);
                 }
             } else if (e.key === 'Backspace') {
                 if (!document.getElementById('lock-screen').classList.contains('hidden')) {
@@ -618,32 +680,14 @@
         });
 
         // ================= ADMIN PANEL LOGIC =================
-        const ADMIN_PASSWORD = "wiktoria wiktoria123";
-        let clickCount = 0;
-        let clickTimeout;
-
-        // Funkcja wywoływana po kliknięciu w napis "Strefa Naszej Miłości"
-        function handleSecretClick(e) {
-            clickCount++;
-            clearTimeout(clickTimeout);
-            
-            // Jeśli kliknięto 3 razy w ciągu 1 sekundy
-            if (clickCount >= 3) {
-                clickCount = 0;
-                document.getElementById('lock-screen').classList.add('hidden');
-                document.getElementById('love-content').classList.add('hidden');
-                openAdminModal();
-            } else {
-                clickTimeout = setTimeout(() => { clickCount = 0; }, 1000);
-            }
-        }
+        const ADMIN_PASSWORD = "wiktoria123";
 
         function openAdminModal() {
             const modal = document.getElementById('admin-modal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            // Mały opóźnienie dla animacji opacity
             setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            
             document.getElementById('admin-login').classList.remove('hidden');
             document.getElementById('admin-dashboard').classList.add('hidden');
             document.getElementById('admin-password').value = '';
@@ -656,7 +700,7 @@
             setTimeout(() => {
                 modal.classList.add('hidden');
                 modal.classList.remove('flex');
-                document.getElementById('lock-screen').classList.remove('hidden');
+                cancelEditTimeline(); // Reset formularza przy zamykaniu
             }, 300);
         }
 
@@ -665,36 +709,78 @@
             if (pass === ADMIN_PASSWORD) {
                 document.getElementById('admin-login').classList.add('hidden');
                 document.getElementById('admin-dashboard').classList.remove('hidden');
+                renderAdminLists(); // Załaduj listy przy logowaniu
             } else {
                 document.getElementById('admin-error').classList.remove('hidden');
             }
         }
 
-        function addTimelineItem() {
+        // --- LOGIKA OSI CZASU ---
+        function saveTimelineItem() {
             const date = document.getElementById('new-tl-date').value;
             const emoji = document.getElementById('new-tl-emoji').value || '❤️';
             const title = document.getElementById('new-tl-title').value;
             const desc = document.getElementById('new-tl-desc').value;
+            const editIndex = parseInt(document.getElementById('edit-tl-index').value);
 
             if (!date || !title) {
                 alert("Proszę podać przynajmniej datę i tytuł!");
                 return;
             }
 
-            // Dodaj na początek (żeby najnowsze było na górze)
-            timelineData.unshift({ date, emoji, title, desc });
-            localStorage.setItem('wk_timeline', JSON.stringify(timelineData));
-            renderTimeline();
+            const newItem = { date, emoji, title, desc };
 
-            // Czyszczenie formularza
+            if (editIndex === -1) {
+                // Dodawanie nowego
+                timelineData.unshift(newItem); 
+            } else {
+                // Edycja istniejącego
+                timelineData[editIndex] = newItem;
+            }
+
+            localStorage.setItem('wk_timeline', JSON.stringify(timelineData));
+            renderMainPage();
+            renderAdminLists();
+            cancelEditTimeline(); // Reset formularza
+        }
+
+        function editTimelineItem(index) {
+            const item = timelineData[index];
+            document.getElementById('new-tl-date').value = item.date;
+            document.getElementById('new-tl-emoji').value = item.emoji;
+            document.getElementById('new-tl-title').value = item.title;
+            document.getElementById('new-tl-desc').value = item.desc;
+            document.getElementById('edit-tl-index').value = index;
+
+            // Zmień UI formularza
+            document.getElementById('tl-form-title').innerText = "Edytuj wydarzenie";
+            document.getElementById('tl-save-btn').innerText = "Zapisz zmiany";
+            document.getElementById('tl-cancel-btn').classList.remove('hidden');
+        }
+
+        function cancelEditTimeline() {
             document.getElementById('new-tl-date').value = '';
             document.getElementById('new-tl-emoji').value = '';
             document.getElementById('new-tl-title').value = '';
             document.getElementById('new-tl-desc').value = '';
+            document.getElementById('edit-tl-index').value = '-1';
 
-            alert("Dodano nowe wydarzenie do osi czasu!");
+            document.getElementById('tl-form-title').innerText = "Dodaj do Osi Czasu";
+            document.getElementById('tl-save-btn').innerText = "Dodaj wydarzenie";
+            document.getElementById('tl-cancel-btn').classList.add('hidden');
         }
 
+        function deleteTimelineItem(index) {
+            if (confirm("Czy na pewno chcesz usunąć to wydarzenie?")) {
+                timelineData.splice(index, 1);
+                localStorage.setItem('wk_timeline', JSON.stringify(timelineData));
+                renderMainPage();
+                renderAdminLists();
+                cancelEditTimeline();
+            }
+        }
+
+        // --- LOGIKA GALERII ---
         function addGalleryImage() {
             const url = document.getElementById('new-img-url').value;
 
@@ -705,18 +791,27 @@
 
             galleryData.push(url);
             localStorage.setItem('wk_gallery', JSON.stringify(galleryData));
-            renderGallery();
+            renderMainPage();
+            renderAdminLists();
 
             document.getElementById('new-img-url').value = '';
-            alert("Pomyślnie dodano zdjęcie do galerii!");
+        }
+
+        function deleteGalleryImage(index) {
+            if (confirm("Czy na pewno chcesz usunąć to zdjęcie z galerii?")) {
+                galleryData.splice(index, 1);
+                localStorage.setItem('wk_gallery', JSON.stringify(galleryData));
+                renderMainPage();
+                renderAdminLists();
+            }
         }
 
         function resetContent() {
             if (confirm("Czy na pewno chcesz usunąć wszystkie dodane wpisy i zdjęcia? Wróci to do stanu początkowego.")) {
                 localStorage.removeItem('wk_timeline');
                 localStorage.removeItem('wk_gallery');
-                loadData(); // Przeładuj domyślne dane
-                alert("Treść została zresetowana.");
+                loadData();
+                cancelEditTimeline();
             }
         }
 
